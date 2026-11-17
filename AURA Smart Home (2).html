@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AURA Smart Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ivory:#F3EDE2;--sand:#E6DCCB;--olive:#263C32;--gold:#B99A65;--char:#343631;--white:#fff;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ivory);color:var(--char);font:400 16.5px/1.65 'Manrope',system-ui,sans-serif;overflow-x:hidden}
+h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;color:var(--olive);line-height:1.1;margin:0;font-weight:600}
+h2{font-size:clamp(32px,5vw,50px);margin-bottom:14px}h3{font-size:24px;margin-bottom:6px}
+p{margin:0}.lead{max-width:58ch;font-size:18px}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1120px;margin:auto;padding:0 20px}
+section{padding:84px 0}
+.alt{background:var(--sand)}
+header{position:sticky;top:0;z-index:30;background:rgba(243,237,226,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--sand);padding-top:env(safe-area-inset-top,0px)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo b{font:700 26px 'Cormorant Garamond',serif;letter-spacing:.2em;color:var(--olive);line-height:1}
+.logo small{display:block;font-size:11px;letter-spacing:.14em;color:var(--char);margin-top:2px}
+nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0}
+nav a{text-decoration:none;font-weight:500;padding:6px 0;border-bottom:2px solid transparent;transition:border-color .25s}
+nav a:hover{border-color:var(--gold)}
+#mb{display:none;background:none;border:1px solid var(--olive);border-radius:10px;width:44px;height:44px;cursor:pointer;color:var(--olive)}
+.btn{display:inline-block;padding:14px 26px;border-radius:99px;font-weight:700;text-decoration:none;border:2px solid var(--olive);background:var(--olive);color:var(--ivory);transition:background .25s,color .25s}
+.btn:hover{background:var(--gold);border-color:var(--gold);color:var(--olive)}
+.btn.o{background:transparent;color:var(--olive)}.btn.o:hover{background:var(--olive);color:var(--ivory);border-color:var(--olive)}
+.hero{padding:56px 0 70px}
+.hg{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}
+.hero h1{font-size:clamp(42px,7vw,78px);margin:14px 0 18px;letter-spacing:-.01em}
+.tag{display:inline-block;border:1px solid var(--gold);border-radius:99px;padding:4px 14px;font-size:14px;font-weight:500}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.hero svg{width:100%;height:auto;display:block}
+.ph-wrap{display:grid;grid-template-columns:1fr 330px;gap:48px;align-items:center}
+.phone{width:min(100%,330px);margin:auto;background:var(--olive);border-radius:42px;padding:14px;box-shadow:0 24px 50px rgba(38,60,50,.25)}
+.screen{background:var(--ivory);border-radius:30px;padding:18px 14px 16px}
+.screen h3{font-size:22px;text-align:center}.screen p{font-size:12.5px;text-align:center;margin:2px 0 14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{aspect-ratio:1/1;border:1px solid var(--sand);border-radius:20px;background:var(--white);color:var(--olive);display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;padding:14px;text-align:left;font:inherit;cursor:pointer;transition:background .3s,color .3s,transform .2s}
+.tile:active{transform:scale(.97)}
+.tile svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tile b{font-size:14px;line-height:1.25;display:block}
+.tile span{font-size:12px;font-weight:700;padding:2px 10px;border-radius:99px;background:var(--sand);color:var(--olive)}
+.tile[aria-pressed=true]{background:var(--olive);color:var(--ivory)}
+.tile[aria-pressed=true] svg{stroke:var(--gold)}
+.tile[aria-pressed=true] span{background:var(--gold);color:var(--olive)}
+.note{font-size:13px;margin-top:12px;color:var(--char)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}
+.card{background:var(--white);border:1px solid var(--sand);border-radius:22px;padding:26px}
+.alt .card{border-color:transparent}
+.card svg{width:40px;height:40px;fill:none;stroke:var(--gold);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;margin-bottom:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.two svg{width:100%;max-width:340px;height:auto;margin:auto;display:block}
+.flow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:34px;margin-top:34px}
+.step{background:var(--white);border:1px solid var(--sand);border-radius:22px;padding:26px;text-align:center;position:relative}
+.step i{display:grid;place-items:center;width:44px;height:44px;margin:0 auto 12px;border-radius:50%;border:2px solid var(--gold);font:700 22px 'Cormorant Garamond',serif;font-style:normal;color:var(--olive)}
+.step+.step::before{content:"›";position:absolute;left:-26px;top:50%;transform:translateY(-50%);font-size:30px;color:var(--gold)}
+.chip{display:inline-block;margin-top:22px;font-size:14px;font-style:italic}
+.status{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px}
+.status ul{margin:10px 0 0;padding-left:20px}.status li{margin:6px 0}
+.founder{display:flex;gap:32px;align-items:center;background:var(--olive);color:var(--ivory);border-radius:28px;padding:40px}
+.founder h2,.founder p{color:var(--ivory)}
+.av{flex:none;width:130px;height:130px;border-radius:50%;border:2px solid var(--gold);display:grid;place-items:center;font:600 46px 'Cormorant Garamond',serif;color:var(--gold)}
+.contact{text-align:center}.contact .lead{margin:0 auto 26px}
+footer{background:var(--olive);color:var(--ivory);padding:34px 0;font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media(max-width:860px){
+section{padding:56px 0}
+#mb{display:block}
+nav{position:absolute;left:0;right:0;top:100%;background:var(--ivory);border-bottom:1px solid var(--sand);display:none}
+nav.open{display:block}
+nav ul{flex-direction:column;gap:0;padding:8px 20px 16px}
+nav a{display:block;padding:12px 0;border-bottom:1px solid var(--sand)}
+.hg,.ph-wrap,.two,.status,.cards,.flow{grid-template-columns:1fr}
+.hero{padding-top:30px}
+.step+.step::before{left:50%;top:-30px;transform:translateX(-50%) rotate(90deg)}
+.founder{flex-direction:column;text-align:center;padding:30px 22px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+body.lock{overflow:hidden}
+#lang{position:fixed;inset:0;z-index:100;overflow:auto;display:flex;padding:20px;background:rgba(243,237,226,.7);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:opacity .5s,visibility .5s}
+#lang.gone{opacity:0;visibility:hidden}
+.lc{width:min(380px,100%);margin:auto;padding:30px 24px;text-align:center;background:rgba(255,255,255,.72);border:1px solid #fff;border-radius:28px;box-shadow:0 20px 50px rgba(38,60,50,.15);animation:up .7s both}
+.lc p{margin:6px 0 14px;font-size:14px}
+.lc button{display:block;width:100%;margin-top:10px;padding:14px;border-radius:99px;border:2px solid var(--olive);background:transparent;color:var(--olive);font:700 19px 'Manrope',sans-serif;cursor:pointer;transition:background .25s}
+.lc button:hover{background:var(--gold)}
+@keyframes up{from{opacity:0;transform:translateY(24px)}}
+.in .hg>*{animation:up .9s .1s both}
+.sw{display:flex;gap:4px;margin-left:18px}
+.sw button{border:1px solid var(--olive);background:transparent;color:var(--olive);border-radius:99px;padding:2px 10px;font:700 13px 'Manrope',sans-serif;cursor:pointer}
+.sw button.a{background:var(--olive);color:var(--ivory)}
+.card{transition:transform .35s,box-shadow .35s}.card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(38,60,50,.1)}
+@media(max-width:860px){.sw{order:2;margin-left:auto;margin-right:10px}#mb{order:3}}
+
+:root{--e:cubic-bezier(.22,1,.36,1)}
+html,body{max-width:100%}
+.wrap>*,.two>*,.hg>*,.ph-wrap>*,.cards>*,.flow>*,.status>*{min-width:0}
+h1,h2,h3,p,li{overflow-wrap:anywhere}
+.blobs{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.blobs i{position:absolute;border-radius:50%;filter:blur(70px);animation:fl 20s ease-in-out infinite alternate}
+.blobs i:nth-child(1){width:46vmax;height:46vmax;background:rgba(185,154,101,.4);top:-12vmax;left:-12vmax}
+.blobs i:nth-child(2){width:40vmax;height:40vmax;background:rgba(38,60,50,.2);bottom:-14vmax;right:-10vmax;animation-delay:-8s}
+.blobs i:nth-child(3){width:30vmax;height:30vmax;background:rgba(230,220,203,.9);top:40%;left:40%;animation-delay:-13s}
+@keyframes fl{to{transform:translate(6vmax,5vmax) scale(1.12)}}
+.alt{background:rgba(230,220,203,.45)}
+.card,.step,.screen,.founder{background:rgba(255,255,255,.5);backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);border:1px solid rgba(255,255,255,.85);box-shadow:0 12px 34px rgba(38,60,50,.09)}
+.founder{background:rgba(38,60,50,.88);border-color:rgba(255,255,255,.2)}
+.phone{background:rgba(38,60,50,.92)}
+.tile{background:rgba(255,255,255,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:background .4s var(--e),color .4s var(--e),transform .3s var(--e)}
+.tile b{overflow-wrap:anywhere;font-size:13.5px}
+.tile[aria-pressed=true]{box-shadow:0 8px 20px rgba(38,60,50,.3)}
+.card.g{border-top:3px solid var(--gold)}
+.ck{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:12px}
+.ck li{display:flex;gap:12px;align-items:center;font-weight:500}
+.ck li::before{content:"✓";flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--olive);color:var(--gold);font-size:14px}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .9s var(--e),transform .9s var(--e)}.rv.v{opacity:1;transform:none}
+nav.open{animation:up .35s var(--e)}
+@media(max-width:860px){.bar{gap:8px}.logo{gap:7px}.logo svg{width:28px;height:28px}.logo b{font-size:21px;letter-spacing:.14em}.logo small{font-size:9px;letter-spacing:.1em}.sw{margin:0 0 0 auto;gap:3px}.sw button{padding:2px 8px;font-size:12px}#mb{width:42px;height:42px;flex:none}.wrap{padding:0 16px}.cards{gap:14px}.card,.step{padding:20px}}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}.blobs i{animation:none}}
+
+main{overflow-x:clip}
+.hv{position:relative;padding:34px 18px 34px;border-radius:32px;background:rgba(255,255,255,.42);backdrop-filter:blur(14px) saturate(150%);-webkit-backdrop-filter:blur(14px) saturate(150%);border:1px solid rgba(255,255,255,.85);box-shadow:0 20px 50px rgba(38,60,50,.12);overflow:hidden}
+.hv svg{position:relative}
+.hv svg rect[fill="#B99A65"]{animation:wp 3s ease-in-out infinite alternate}
+@keyframes wp{from{opacity:.5}to{opacity:1}}
+.fc{position:absolute;z-index:2;display:flex;align-items:center;gap:8px;max-width:calc(100% - 24px);padding:7px 14px;border-radius:99px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid #fff;box-shadow:0 8px 20px rgba(38,60,50,.12);font:700 13px 'Manrope',sans-serif;color:var(--olive);animation:bob 5s ease-in-out infinite alternate}
+.fc::before{content:"";flex:none;width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(185,154,101,.28)}
+.c1{top:12px;left:12px}.c2{bottom:12px;right:12px;animation-delay:-2.5s}
+@keyframes bob{to{transform:translateY(-6px)}}
+.phones{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:34px;justify-items:center;align-items:start}
+.pcol{margin:0;width:100%;max-width:340px;min-width:0}
+.pcol figcaption{text-align:center;margin-top:14px;font-weight:700;color:var(--olive)}
+.phone{width:100%;max-width:340px;height:600px;padding:12px;margin:0}
+.screen{height:100%;display:flex;flex-direction:column;padding:16px 14px;min-height:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+.top h3{font-size:24px;text-align:left;margin:0}.top p{text-align:left;margin:0;font-size:12.5px}
+.pill{flex:none;padding:3px 12px;border-radius:99px;background:var(--olive);color:var(--gold);font:700 12px 'Manrope',sans-serif}
+.grid{align-content:start;overflow:auto;min-height:0}
+.tile svg{width:40px;height:40px;padding:8px;border-radius:13px;background:rgba(185,154,101,.2)}
+.tile[aria-pressed=true] svg{background:rgba(255,255,255,.12)}
+.tabs{display:flex;gap:6px;margin-bottom:8px}
+.tabs button{flex:1;min-width:0;border:0;border-radius:12px;padding:8px;background:rgba(255,255,255,.7);color:var(--olive);font:700 14px 'Manrope',sans-serif;cursor:pointer;transition:background .35s var(--e),color .35s var(--e)}
+.tabs button.a{background:var(--olive);color:var(--ivory)}
+#q{width:100%;padding:9px 12px;border:1px solid #fff;border-radius:12px;background:rgba(255,255,255,.85);font:15px 'Manrope',sans-serif;margin-bottom:8px;color:var(--char)}
+#crumb{display:flex;gap:8px;align-items:center;font-weight:700;margin-bottom:8px;color:var(--olive)}
+#crumb button{border:0;border-radius:8px;padding:3px 10px;background:rgba(255,255,255,.85);color:var(--olive);font:600 13px 'Manrope',sans-serif;cursor:pointer}
+#list{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:8px}
+#list.go>*{animation:up .45s var(--e) both}
+.rw{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.72);border:1px solid #fff;transition:background .4s var(--e),box-shadow .4s var(--e),transform .3s var(--e)}
+.rw.nav{cursor:pointer}.rw.nav:hover{transform:translateX(3px)}
+.rw .nm{flex:1;min-width:0;line-height:1.25}.rw .nm b{display:block;font-size:14px;color:var(--olive)}.rw small{display:block;font-size:12px;opacity:.75}
+.ri{flex:none;width:24px;height:24px;fill:none;stroke:var(--gold);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s}
+.dv.on{background:rgba(255,255,255,.95);box-shadow:0 0 0 1.5px var(--gold),0 8px 20px rgba(185,154,101,.25)}.dv.on .ri{stroke:var(--olive)}
+.tg{flex:none;width:46px;height:26px;border-radius:99px;border:0;background:#CFC6B4;position:relative;cursor:pointer;transition:background .4s var(--e)}
+.tg::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.2);transition:transform .4s var(--e)}
+.dv.on .tg{background:var(--olive)}.dv.on .tg::after{transform:translateX(20px)}
+.sl{width:100%;display:flex;gap:8px;align-items:center;font-size:12.5px}.sl input{flex:1;min-width:0;accent-color:var(--olive)}.sl span{min-width:34px;text-align:right}
+.none{text-align:center;font-size:14px;margin:10px 0}
+@media(max-width:860px){.phones{grid-template-columns:1fr;gap:34px}.phone{height:580px;padding:10px}.screen{padding:14px 10px}.hv{padding:44px 12px}.tile{padding:10px}.tile b{font-size:13px}}
+.screen{background:rgba(243,237,226,.94)}
+
+.lbox{display:inline-flex;gap:4px;max-width:100%;padding:6px;margin-bottom:18px;border-radius:16px;background:rgba(20,20,30,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.08);box-shadow:0 10px 26px rgba(38,60,50,.18)}
+.lbox button{border:0;background:transparent;color:#9ca3af;border-radius:11px;padding:7px 14px;font:600 13px 'Manrope',sans-serif;cursor:pointer;transition:all .25s cubic-bezier(.175,.885,.32,1.275)}
+.lbox button:hover{color:#fff}.lbox button:active{transform:scale(.95)}
+.lbox button.a{background:var(--gold);color:var(--olive);box-shadow:0 4px 12px rgba(185,154,101,.4)}
+.pcol{max-width:300px}
+.phone{width:100%;max-width:300px;height:580px;padding:16px;margin:0;background:#121216;border:0;border-radius:40px;box-shadow:0 25px 50px -12px rgba(0,0,0,.7),inset 0 0 0 2px rgba(255,255,255,.1);overflow:hidden;position:relative;display:flex;flex-direction:column;color:#f3f4f6;backdrop-filter:none;-webkit-backdrop-filter:none}
+.phone h3{font-family:'Manrope',system-ui,sans-serif;font-size:16px;font-weight:700;color:#fff;margin:0;line-height:1.25}
+.sb{flex:none;display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#9ca3af;margin-bottom:10px;padding:0 6px}
+.notch{width:80px;height:16px;background:#000;border-radius:99px}
+.hi{flex:none;display:block;width:128px;height:4px;background:rgba(255,255,255,.2);border-radius:99px;margin:10px auto 0}
+.phone .top{flex:none;margin-bottom:10px}
+.top .sub{font-size:12px;font-weight:600;color:#60a5fa;letter-spacing:.02em}.top .sub.b{color:#818cf8}
+.phone .pill{background:rgba(59,130,246,.2);color:#93c5fd}
+.phone .grid{gap:10px;margin:auto 0;overflow:visible;align-content:center;padding:2px}
+.phone .tile{aspect-ratio:auto;height:104px;padding:10px;flex-direction:column;justify-content:space-between;align-items:stretch;background:rgba(20,20,30,.75);border:1px solid rgba(255,255,255,.1);color:#e5e7eb;border-radius:18px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:all .25s cubic-bezier(.175,.885,.32,1.275);min-width:0}
+.phone .tile:active{transform:scale(.95)}
+.phone .tile[aria-pressed=true]{background:rgba(30,45,80,.8);border-color:rgba(59,130,246,.8);box-shadow:0 0 15px rgba(59,130,246,.5),inset 0 0 10px rgba(59,130,246,.3);color:#e5e7eb}
+.phone .tile .tt{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:0;background:none}
+.phone .tile b{font:600 12.5px/1.2 'Manrope',system-ui,sans-serif;color:#e5e7eb;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.ib{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:11px;font-style:normal}
+.phone .tile .ib svg,.phone .tile[aria-pressed=true] .ib svg{width:18px;height:18px;padding:0;background:none;border-radius:0;stroke:currentColor;stroke-width:1.7}
+.k0{background:rgba(59,130,246,.14);color:#60a5fa}.k1{background:rgba(168,85,247,.14);color:#c084fc}.k2{background:rgba(245,158,11,.14);color:#fbbf24}.k3{background:rgba(236,72,153,.14);color:#f472b6}.k4{background:rgba(16,185,129,.14);color:#34d399}.k5{background:rgba(6,182,212,.14);color:#22d3ee}
+.st{min-width:0;font-style:normal;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:rgba(255,255,255,.08);color:#9ca3af;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile[aria-pressed=true] .st{background:rgba(59,130,246,.28);color:#bfdbfe}
+.phone .tabs{flex:none}.phone .tabs button{background:rgba(255,255,255,.06);color:#9ca3af;transition:all .25s cubic-bezier(.175,.885,.32,1.275)}
+.phone .tabs button.a{background:#2563eb;color:#fff}.phone .tabs button:active{transform:scale(.95)}
+.phone #q{flex:none;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#f3f4f6}.phone #q::placeholder{color:#9ca3af}
+.phone #crumb{flex:none;color:#e5e7eb}.phone #crumb button{background:rgba(255,255,255,.1);color:#fff;transition:all .25s cubic-bezier(.175,.885,.32,1.275)}.phone #crumb button:active{transform:scale(.95)}
+.phone #list{padding:4px 6px 8px;scrollbar-width:none}.phone #list::-webkit-scrollbar{display:none}
+.phone .rw{background:rgba(20,20,30,.75);border:1px solid rgba(255,255,255,.08);color:#e5e7eb;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:all .25s cubic-bezier(.175,.885,.32,1.275)}
+.phone .rw.nav:hover{transform:none}.phone .rw.nav:active{transform:scale(.96)}
+.phone .rw .nm b{color:#f3f4f6}.phone .rw small{color:#9ca3af;opacity:1}
+.phone .ri{stroke:#818cf8}
+.phone .dv.on{background:rgba(30,45,80,.85);box-shadow:inset 0 0 0 1px rgba(59,130,246,.7),0 0 12px rgba(59,130,246,.3)}.phone .dv.on .ri{stroke:#60a5fa}
+.phone .tg{background:rgba(255,255,255,.15)}.phone .dv.on .tg{background:#3b82f6}
+.phone .tg::after{transition:transform .3s cubic-bezier(.175,.885,.32,1.275)}
+.phone .sl{color:#9ca3af}.phone .sl input{accent-color:#3b82f6}.phone .none{color:#9ca3af}
+@media(max-width:860px){.phone{padding:16px;height:580px}.phones{gap:30px}}
+</style>
+</head>
+<body class="lock">
+<div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+<div id="lang" role="dialog" aria-modal="true" aria-label="Language"><div class="lc"><svg width="46" height="46" viewBox="0 0 34 34" aria-hidden="true"><path d="M6 30V16a11 11 0 0 1 22 0v14" fill="none" stroke="#B99A65" stroke-width="3" stroke-linecap="round"/><circle cx="17" cy="21" r="3.5" fill="#263C32"/></svg><h2 data-k="0">AURA Smart Home</h2><button data-l="hi">हिन्दी</button><button data-l="hn" data-k="2">Hinglish</button><button data-l="en" data-k="3">English</button></div></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="s0" viewBox="0 0 24 24"><path d="M6 3h12l-2 7H8zM12 10v5M9 15h6l-1 6h-4z"/></symbol>
+<symbol id="s1" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></symbol>
+<symbol id="s2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.6"/><path d="M12 10.4c0-5 4-6 5-3s-2 4-5 3zM13.6 12c5 0 6 4 3 5s-4-2-3-5zM12 13.6c0 5-4 6-5 3s2-4 5-3z"/></symbol>
+<symbol id="s3" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="8" rx="2"/><path d="M7 16.5l-1 3M12 16.5v3M17 16.5l1 3M7 9h10"/></symbol>
+<symbol id="s4" viewBox="0 0 24 24"><path d="M6 17h12l-2-3v-4a4 4 0 0 0-8 0v4zM10 20a2 2 0 0 0 4 0"/></symbol>
+<symbol id="s5" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></symbol>
+<symbol id="s6" viewBox="0 0 24 24"><path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/></symbol><symbol id="s7" viewBox="0 0 24 24"><path d="M3 7h6l2 2h10v10H3z"/></symbol><symbol id="s8" viewBox="0 0 24 24"><path d="M6 21V4h12v17M3 21h18M14 12h.01"/></symbol></defs></svg>
+
+<header><div class="wrap bar">
+<a class="logo" href="#top" aria-label="AURA Smart Home, back to top">
+<svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><path d="M6 30V16a11 11 0 0 1 22 0v14" fill="none" stroke="#B99A65" stroke-width="3" stroke-linecap="round"/><circle cx="17" cy="21" r="3.5" fill="#263C32"/></svg>
+<span><b>AURA</b><small>Smart Home</small></span></a>
+<button id="mb" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+<nav id="nav" aria-label="Main"><ul>
+<li><a href="#demo" data-k="4">Interface</a></li><li><a href="#features" data-k="5">Features</a></li><li><a href="#module" data-k="6">Switch</a></li><li><a href="#how" data-k="7">How it works</a></li><li><a href="#status" data-k="8">Status</a></li><li><a href="#founder" data-k="9">Founder</a></li><li><a href="#contact" data-k="10">Contact</a></li></ul></nav>
+</div></header>
+
+<main id="top">
+<section class="hero"><div class="wrap hg">
+<div>
+<div class="lbox" role="group" aria-label="Language"><button data-l="hi">हिंदी</button><button data-l="hn">Hinglish</button><button data-l="en">English</button></div>
+<span class="tag" data-k="13">A startup by Anup Tiwari</span>
+<h1 data-k="14">One calm place to run your home.</h1>
+<p class="lead" data-k="15">AURA Smart Home is an early-stage startup working on smart switches with the control chip built in, so everyday appliances can be run from one simple phone screen. Scroll down to learn more.</p>
+<div class="cta"><a class="btn" href="#features" data-k="16">Explore features</a><a class="btn o" href="#contact" data-k="17">Contact</a></div>
+</div>
+<div class="hv"><span class="fc c1" data-k="88">Outdoor lights: ON</span><span class="fc c2" data-k="89">Fan speed: 3</span><svg viewBox="0 0 400 320" role="img" aria-label="Illustration of a modern two-storey home">
+<rect x="0" y="262" width="400" height="58" fill="#E6DCCB"/>
+<circle cx="338" cy="70" r="34" fill="#E6DCCB"/>
+<rect x="60" y="150" width="220" height="112" fill="#fff" stroke="#263C32" stroke-width="3"/>
+<rect x="90" y="70" width="190" height="80" fill="#F3EDE2" stroke="#263C32" stroke-width="3"/>
+<path d="M50 150h240M80 70h210" stroke="#B99A65" stroke-width="6"/>
+<rect x="110" y="88" width="56" height="44" fill="#B99A65" opacity=".85"/><rect x="190" y="88" width="56" height="44" fill="#263C32"/>
+<rect x="82" y="174" width="70" height="52" fill="#B99A65" opacity=".85"/><path d="M176 262v-60a21 21 0 0 1 42 0v60z" fill="#263C32"/>
+<rect x="236" y="174" width="30" height="52" fill="#263C32"/>
+<path d="M310 262v-60" stroke="#263C32" stroke-width="3"/><circle cx="310" cy="190" r="26" fill="#263C32" opacity=".9"/><circle cx="310" cy="190" r="26" fill="none" stroke="#B99A65" stroke-width="2" transform="translate(5 5)"/>
+<path d="M30 262h340" stroke="#263C32" stroke-width="3"/></svg></div>
+</div></section>
+
+<section id="demo" class="alt"><div class="wrap">
+<h2 data-k="18">Smart home control interface</h2>
+<p class="lead" data-k="19">A look at the phone panel we have in mind: six tiles, one tap each, grouped by floor and room. Try them here.</p>
+<p class="note" data-k="20">Interface demonstration only. These buttons are not connected to any appliance.</p>
+<div class="phones">
+<div class="pcol"><div class="phone"><div class="sb"><span>9:41</span><i class="notch"></i><span>5G 🔋</span></div>
+<div class="top"><div><div class="sub" data-k="21">My Home</div><h3 data-k="84">Quick controls</h3></div><span class="pill" id="cnt"></span></div>
+<div class="grid" id="tiles"></div><i class="hi"></i></div></div>
+<div class="pcol"><div class="phone"><div class="sb"><span>9:41</span><i class="notch"></i><span>5G 🔋</span></div>
+<div class="top"><div><div class="sub b" data-k="21">My Home</div><h3 data-k="85">Floors, rooms and search</h3></div></div>
+<div class="tabs"><button id="t1" class="a" data-k="86">Home</button><button id="t2" data-k="87">Floors</button></div>
+<input id="q" type="search" aria-label="Search"><div id="crumb" hidden></div><div id="list"></div><i class="hi"></i></div></div>
+</div></div></section>
+
+<section id="features"><div class="wrap"><h2 data-k="22">Six proposed features</h2><p class="lead" data-k="23">Each one is a planned capability of the concept, shown here as an idea rather than a finished product.</p><div class="cards" id="feat"></div></div></section>
+
+<section id="module" class="alt"><div class="wrap two">
+<svg viewBox="0 0 240 200" role="img" aria-label="Illustration of the Smart Control Module"><ellipse cx="120" cy="176" rx="82" ry="12" fill="#263C32" opacity=".12"/><rect x="50" y="34" width="140" height="130" rx="26" fill="#263C32"/><rect x="62" y="46" width="116" height="106" rx="18" fill="none" stroke="#B99A65" stroke-width="2"/><path d="M96 124V98a24 24 0 0 1 48 0v26" fill="none" stroke="#B99A65" stroke-width="5" stroke-linecap="round"/><circle cx="120" cy="116" r="8" fill="#F3EDE2"/><circle cx="160" cy="58" r="4" fill="#B99A65"/></svg>
+<div><h2 data-k="24">The AURA smart switch</h2><p class="lead" data-k="25">We plan to offer the whole switch, not just a chip: a switch with the control chip already built in, so it works by hand and from your phone.</p><p class="lead" style="margin-top:14px" data-k="26">Designed with your privacy in mind. Technical details are still being developed and are not shared on this page.</p></div>
+</div></section>
+
+<section id="sfeat"><div class="wrap"><h2 data-k="65">Features of the AURA smart switch</h2><p class="lead" data-k="66">What you get with the switch and its phone app.</p><div class="cards"><div class="card g"><h3 data-k="67">Floor and room folders</h3><p data-k="68">Open a floor, pick a room and see every switch in it.</p></div><div class="card g"><h3 data-k="69">One button for every appliance</h3><p data-k="70">Bulbs, lights, fans, AC, heaters, coolers and more.</p></div><div class="card g"><h3 data-k="71">Fan speed and brightness</h3><p data-k="72">Slow down or speed up a fan. Dim or brighten a light.</p></div><div class="card g"><h3 data-k="73">Search or scroll</h3><p data-k="74">The home page lists every button. Type a name to find it.</p></div><div class="card g"><h3 data-k="75">Works by hand and by phone</h3><p data-k="76">The chip is built into the switch, so the switch still works as usual.</p></div><div class="card g"><h3 data-k="77">Clear names</h3><p data-k="78">Each button shows a name like Outside light, not just a board.</p></div></div></div></section>
+
+<section id="sec" class="alt"><div class="wrap two"><div><h2 data-k="79">Security and privacy</h2><p class="lead" data-k="80">Your home should stay your own. This is how we are designing for that.</p><ul class="ck"><li data-k="81">The chip is designed to be secure</li><li data-k="82">Built so your privacy is not put at risk</li><li data-k="83">Only you control your switches</li></ul></div><svg viewBox="0 0 120 90" role="img" aria-label="Shield"><circle cx="60" cy="45" r="40" fill="#B99A65" opacity=".2"/><path d="M60 6L100 20V46C100 68 82 80 60 86C38 80 20 68 20 46V20Z" fill="#263C32"/><rect x="45" y="40" width="30" height="24" rx="5" fill="#F3EDE2"/><path d="M51 40v-6a9 9 0 0 1 18 0v6" fill="none" stroke="#F3EDE2" stroke-width="5" stroke-linecap="round"/><circle cx="60" cy="52" r="4" fill="#B99A65"/></svg></div></section>
+
+<section id="how"><div class="wrap"><h2 data-k="27">How it works</h2><p class="lead" data-k="28">A simple, conceptual flow from a tap to a result.</p>
+<div class="flow">
+<div class="step"><i>1</i><h3 data-k="29">User command</h3><p data-k="30">You tap a tile on your phone.</p></div>
+<div class="step"><i>2</i><h3 data-k="31">Compatible control system</h3><p data-k="32">The command reaches the control module for that appliance.</p></div>
+<div class="step"><i>3</i><h3 data-k="33">Appliance response</h3><p data-k="34">The appliance switches as asked.</p></div></div>
+<span class="chip" data-k="35">Conceptual workflow, not a technical diagram.</span></div></section>
+
+<section class="alt"><div class="wrap"><h2 data-k="36">Potential benefits</h2>
+<div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr))">
+<div class="card"><h3 data-k="37">Convenience</h3><p data-k="38">Handle routine switching from wherever you sit.</p></div>
+<div class="card"><h3 data-k="39">Centralized control</h3><p data-k="40">One panel instead of many switches.</p></div>
+<div class="card"><h3 data-k="41">Better device management</h3><p data-k="42">See what is on and what is off at a glance.</p></div>
+<div class="card"><h3 data-k="43">Room to grow</h3><p data-k="44">A base for more automation ideas over time.</p></div></div></div></section>
+
+<section id="status"><div class="wrap"><h2 data-k="45">Project status</h2><p class="lead" data-k="46">AURA Smart Home is an early-stage concept and development project.</p>
+<div class="status"><div class="card"><h3 data-k="47">What exists today</h3><ul><li data-k="48">The AURA concept</li><li data-k="49">Six proposed features</li><li data-k="50">This interface demonstration</li></ul></div>
+<div class="card"><h3 data-k="51">Not yet claimed</h3><ul><li data-k="52">Commercial availability</li><li data-k="53">Installed hardware</li><li data-k="54">Tested performance</li><li data-k="55">Certifications</li></ul></div></div></div></section>
+
+<section id="founder" class="alt"><div class="wrap"><div class="founder"><div class="av" aria-hidden="true" data-k="56">AT</div>
+<div><h2 data-k="57">Anup Tiwari</h2><p style="font-size:18px" data-k="58">Founder &amp; Concept Creator, AURA Smart Home</p><p style="margin-top:12px;max-width:56ch" data-k="59">Anup Tiwari started AURA Smart Home as a startup, with one aim: make everyday home control simple and tidy.</p></div></div></div></section>
+
+<section id="contact"><div class="wrap contact"><h2 data-k="60">Talk to us</h2><p class="lead" data-k="61">Interested in the AURA concept? Send us a message on WhatsApp.</p><a class="btn" data-wa href="#contact" data-k="62">Message on WhatsApp</a></div></section>
+</main>
+
+<footer><div class="wrap"><span data-k="63">AURA Smart Home by Anup Tiwari</span><span data-k="64">Early-stage startup</span><span>© <span id="yr"></span></span></div></footer>
+
+<script>
+// Set your WhatsApp link here, e.g. https://wa.me/91XXXXXXXXXX?text=Hello%20AURA
+const WHATSAPP_LINK="https://wa.me/91XXXXXXXXXX?text=Hello%20AURA%20Smart%20Home";
+const items=[
+["Outdoor Lights","s0","ON","OFF","Switch porch, gate and garden lights from one screen."],
+["Full Home Lights","s1","ON","OFF","One tap for every light in the house."],
+["Fan Control","s2","ON","OFF","Turn fans on or off without getting up."],
+["Air Conditioner","s3","ON","OFF","Proposed control of the AC from the same panel."],
+["Milk Overflow Alert","s4","ALERT","OK","A proposed alert so boiling milk is not forgotten."],
+["Water Motor","s5","ON","OFF","Proposed on and off control for the water pump."]];
+const ic=k=>`<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#${k}"/></svg>`;
+const H=["", "", "", "", "इंटरफ़ेस", "फ़ीचर्स", "स्विच", "कैसे काम करता है", "स्थिति", "संस्थापक", "संपर्क", "", "", "अनूप तिवारी का स्टार्टअप", "आपके घर का एक शांत कंट्रोल।", "AURA Smart Home एक शुरुआती स्टार्टअप है, जो कंट्रोल चिप वाले स्मार्ट स्विच पर काम कर रहा है, ताकि घर के रोज़ के उपकरण एक आसान फ़ोन स्क्रीन से चलें। और जानने के लिए नीचे स्क्रॉल करें।", "फ़ीचर्स देखें", "संपर्क करें", "स्मार्ट होम कंट्रोल इंटरफ़ेस", "हमारे मन में जो फ़ोन पैनल है उसकी झलक: छह टाइल, हर एक पर एक छुअन, मंज़िल और कमरे के हिसाब से। यहाँ आज़माएँ।", "यह सिर्फ़ इंटरफ़ेस का डेमो है। ये बटन किसी उपकरण से जुड़े नहीं हैं।", "मेरा घर", "छह प्रस्तावित फ़ीचर्स", "हर एक कॉन्सेप्ट की एक योजनाबद्ध क्षमता है, जिसे यहाँ तैयार प्रोडक्ट नहीं, एक विचार के रूप में दिखाया गया है।", "AURA स्मार्ट स्विच", "हम सिर्फ़ चिप नहीं, पूरा स्विच देने की योजना बना रहे हैं: ऐसा स्विच जिसमें कंट्रोल चिप पहले से लगी हो, जो हाथ से भी चले और फ़ोन से भी।", "आपकी प्राइवेसी का ध्यान रखकर बनाया जा रहा है। तकनीकी जानकारी पर अभी काम चल रहा है और यहाँ साझा नहीं की गई है।", "कैसे काम करता है", "टैप से नतीजे तक का एक सरल, कॉन्सेप्ट वाला क्रम।", "यूज़र का कमांड", "आप फ़ोन पर एक टाइल छूते हैं।", "संगत कंट्रोल सिस्टम", "कमांड उस उपकरण के कंट्रोल मॉड्यूल तक पहुँचता है।", "उपकरण का जवाब", "उपकरण वैसे ही चालू या बंद होता है जैसा कहा गया।", "यह कॉन्सेप्ट वाला क्रम है, तकनीकी डायग्राम नहीं।", "संभावित फ़ायदे", "सुविधा", "रोज़ का स्विच चलाना, आप जहाँ बैठे हैं वहीं से।", "एक जगह कंट्रोल", "कई स्विच की जगह एक पैनल।", "बेहतर उपकरण प्रबंधन", "एक नज़र में देखें क्या चालू है और क्या बंद।", "आगे बढ़ने की जगह", "समय के साथ और ऑटोमेशन आइडिया जोड़ने का आधार।", "प्रोजेक्ट की स्थिति", "AURA Smart Home एक शुरुआती चरण का कॉन्सेप्ट और डेवलपमेंट प्रोजेक्ट है।", "आज क्या मौजूद है", "AURA का कॉन्सेप्ट", "छह प्रस्तावित फ़ीचर्स", "यह इंटरफ़ेस डेमो", "अभी दावा नहीं", "व्यावसायिक उपलब्धता", "लगाया गया हार्डवेयर", "जाँची हुई परफ़ॉर्मेंस", "सर्टिफ़िकेशन", "", "", "संस्थापक और कॉन्सेप्ट क्रिएटर, AURA Smart Home", "अनूप तिवारी ने AURA Smart Home को एक स्टार्टअप के रूप में शुरू किया, एक मक़सद के साथ: घर का रोज़ का कंट्रोल आसान और सुव्यवस्थित बनाना।", "हमसे बात करें", "AURA के कॉन्सेप्ट में दिलचस्पी है? हमें WhatsApp पर संदेश भेजें।", "WhatsApp पर संदेश भेजें", "AURA Smart Home, अनूप तिवारी द्वारा", "शुरुआती चरण का स्टार्टअप"],N=["", "", "", "", "Interface", "Features", "Switch", "Kaise kaam karta hai", "Sthiti", "Founder", "Sampark", "", "", "Anup Tiwari ka startup", "Aapke ghar ka ek shaant control.", "AURA Smart Home ek shuruaati startup hai, jo control chip wale smart switch par kaam kar raha hai, taaki ghar ke roz ke appliance ek aasaan phone screen se chalein. Aur jaanne ke liye neeche scroll karein.", "Features dekhein", "Sampark karein", "Smart home control interface", "Hamare man mein jo phone panel hai uski jhalak: chhe tile, har ek par ek tap, floor aur room ke hisaab se. Yahin try karein.", "Yeh sirf interface ka demo hai. Ye buttons kisi appliance se jude nahi hain.", "Mera Ghar", "Chhe proposed features", "Har ek concept ki ek planned capability hai, jise yahan ready product nahi, ek idea ki tarah dikhaya gaya hai.", "AURA smart switch", "Hum sirf chip nahi, poora switch dene ki yojana bana rahe hain: aisa switch jisme control chip pehle se lagi ho, jo haath se bhi chale aur phone se bhi.", "Aapki privacy ka dhyan rakhkar banaya ja raha hai. Technical details par abhi kaam chal raha hai aur yahan share nahi ki gayi hain.", "Kaise kaam karta hai", "Tap se result tak ka ek saral, concept wala flow.", "User command", "Aap phone par ek tile touch karte hain.", "Compatible control system", "Command us appliance ke control module tak pahunchta hai.", "Appliance ka response", "Appliance waise hi on ya off hota hai jaisa kaha gaya.", "Yeh concept wala flow hai, technical diagram nahi.", "Sambhavit faayde", "Suvidha", "Roz ka switching, aap jahan baithe hain wahin se.", "Ek jagah control", "Kai switch ki jagah ek panel.", "Behtar device management", "Ek nazar mein dekhein kya on hai aur kya off.", "Aage badhne ki jagah", "Samay ke saath aur automation ideas jodne ka aadhar.", "Project ki sthiti", "AURA Smart Home ek shuruaati charan ka concept aur development project hai.", "Aaj kya maujood hai", "AURA ka concept", "Chhe proposed features", "Yeh interface demo", "Abhi daava nahi", "Commercial availability", "Laga hua hardware", "Test ki hui performance", "Certifications", "", "", "Founder aur Concept Creator, AURA Smart Home", "Anup Tiwari ne AURA Smart Home ko ek startup ki tarah shuru kiya, ek maksad ke saath: ghar ka roz ka control aasaan aur vyavasthit banana.", "Humse baat karein", "AURA ke concept mein dilchaspi hai? Hamein WhatsApp par message bhejein.", "WhatsApp par message bhejein", "AURA Smart Home, Anup Tiwari dwara", "Shuruaati charan ka startup"],TR={"hi": [["आउटडोर लाइट", "चालू", "बंद", "बरामदे, गेट और बगीचे की लाइट एक स्क्रीन से चलाएँ।"], ["पूरे घर की लाइट", "चालू", "बंद", "घर की हर लाइट के लिए एक छुअन।"], ["पंखा कंट्रोल", "चालू", "बंद", "उठे बिना पंखा चालू या बंद करें।"], ["एयर कंडीशनर", "चालू", "बंद", "उसी पैनल से AC के प्रस्तावित कंट्रोल।"], ["दूध उफ़ान अलर्ट", "अलर्ट", "ठीक", "प्रस्तावित अलर्ट, ताकि उबलता दूध भूला न जाए।"], ["वॉटर मोटर", "चालू", "बंद", "पानी की मोटर के प्रस्तावित चालू-बंद कंट्रोल।"]], "hn": [["Outdoor Light", "Chalu", "Band", "Baramde, gate aur bagiche ki light ek screen se chalayein."], ["Poore Ghar ki Light", "Chalu", "Band", "Ghar ki har light ke liye ek tap."], ["Pankha Control", "Chalu", "Band", "Uthe bina pankha on ya off karein."], ["Air Conditioner", "Chalu", "Band", "Usi panel se AC ka proposed control."], ["Doodh Ubaal Alert", "Alert", "Theek", "Proposed alert, taaki ubalta doodh bhoola na jaye."], ["Water Motor", "Chalu", "Band", "Paani ki motor ka proposed on-off control."]]};
+H.push(...["AURA स्मार्ट स्विच के फ़ीचर्स", "स्विच और उसके फ़ोन ऐप में आपको क्या मिलता है।", "मंज़िल और कमरे के फ़ोल्डर", "मंज़िल खोलें, कमरा चुनें और उसके सारे स्विच देखें।", "हर उपकरण के लिए एक बटन", "बल्ब, लाइट, पंखा, AC, हीटर, कूलर और बहुत कुछ।", "पंखे की स्पीड और ब्राइटनेस", "पंखा धीमा या तेज़ करें। लाइट मद्धम या तेज़ करें।", "खोजें या स्क्रॉल करें", "होम पेज पर सारे बटन हैं। नाम लिखकर उसे ढूँढें।", "हाथ से भी, फ़ोन से भी", "चिप स्विच के अंदर ही है, इसलिए स्विच पहले की तरह चलता रहता है।", "साफ़ नाम", "हर बटन पर बाहर की लाइट जैसा नाम दिखता है, सिर्फ़ बोर्ड नहीं।", "सुरक्षा और प्राइवेसी", "आपका घर आपका ही रहना चाहिए। हम इसी सोच से इसे बना रहे हैं।", "चिप को सुरक्षित बनाने की सोच से डिज़ाइन किया जा रहा है", "इस तरह बनाया जा रहा है कि आपकी प्राइवेसी को ख़तरा न हो", "सिर्फ़ आप अपने स्विच कंट्रोल करते हैं"]);N.push(...["AURA smart switch ke features", "Switch aur uske phone app mein aapko kya milta hai.", "Floor aur room ke folder", "Floor kholein, room chunein aur uske saare switch dekhein.", "Har appliance ke liye ek button", "Bulb, light, pankha, AC, heater, cooler aur bahut kuch.", "Pankhe ki speed aur brightness", "Pankha dheema ya tez karein. Light dim ya bright karein.", "Search ya scroll karein", "Home page par saare buttons hain. Naam likhkar dhoondhein.", "Haath se bhi, phone se bhi", "Chip switch ke andar hi hai, isliye switch pehle ki tarah chalta rehta hai.", "Saaf naam", "Har button par bahar ki light jaisa naam dikhta hai, sirf board nahi.", "Security aur privacy", "Aapka ghar aapka hi rehna chahiye. Hum isi soch se ise bana rahe hain.", "Chip ko secure banane ki soch se design kiya ja raha hai", "Is tarah banaya ja raha hai ki aapki privacy ko khatra na ho", "Sirf aap apne switch control karte hain"]);
+const st=items.map(()=>0);let lang="en";
+const g=i=>lang==="en"?{n:items[i][0],on:items[i][2],off:items[i][3],d:items[i][4]}:{n:TR[lang][i][0],on:TR[lang][i][1],off:TR[lang][i][2],d:TR[lang][i][3]};
+function draw(f){document.getElementById("tiles").innerHTML=items.map((t,i)=>{const x=g(i);return `<button class="tile" aria-pressed="${!!st[i]}" data-i="${i}"><span class="tt"><i class="ib k${i}">${ic(t[1])}</i><em class="st">${st[i]?x.on:x.off}</em></span><b>${x.n}</b></button>`}).join("");
+document.getElementById("feat").innerHTML=items.map((t,i)=>{const x=g(i);return `<div class="card">${ic(t[1])}<h3>${x.n}</h3><p>${x.d}</p></div>`}).join("");
+document.getElementById("cnt").textContent=st.filter(Boolean).length+"/6 "+g(0).on;if(f!==undefined)document.querySelector('.tile[data-i="'+f+'"]').focus()}
+document.getElementById("tiles").onclick=e=>{const b=e.target.closest(".tile");if(!b)return;const i=b.dataset.i;st[i]^=1;draw(i)};
+H.push(...["त्वरित कंट्रोल", "मंज़िल, कमरे और खोज", "होम", "मंज़िलें", "बाहर की लाइट: चालू", "पंखे की स्पीड: 3"]);N.push(...["Turant control", "Floor, room aur search", "Home", "Floors", "Bahar ki light: Chalu", "Pankhe ki speed: 3"]);
+const $=s=>document.querySelector(s);
+const UI={"en": {"search": "Search buttons", "back": "Back", "none": "No match", "on": "on", "spd": "Speed", "br": "Brightness", "rm": "rooms"}, "hi": {"search": "बटन खोजें", "back": "वापस", "none": "कुछ नहीं मिला", "on": "चालू", "spd": "स्पीड", "br": "ब्राइटनेस", "rm": "कमरे"}, "hn": {"search": "Button search karein", "back": "Back", "none": "Kuch nahi mila", "on": "chalu", "spd": "Speed", "br": "Brightness", "rm": "rooms"}},FN={"en": ["Ground floor", "1st floor", "2nd floor"], "hi": ["भूतल", "पहली मंज़िल", "दूसरी मंज़िल"], "hn": ["Ground floor", "Pehli manzil", "Doosri manzil"]},RN={"en": ["Hall", "Kitchen", "Bathroom", "Bedroom", "Outside", "Study"], "hi": ["हॉल", "रसोई", "बाथरूम", "बेडरूम", "बाहर", "स्टडी रूम"], "hn": ["Hall", "Rasoi", "Bathroom", "Bedroom", "Bahar", "Study room"]},TN={"en": ["light", "fan", "AC", "cooler", "heater"], "hi": ["लाइट", "पंखा", "AC", "कूलर", "हीटर"], "hn": ["light", "pankha", "AC", "cooler", "heater"]};
+const TY=["s1","s2","s3","s5","s6"],FL=[[0,[[0,[0,1,2]],[1,[0,3]],[2,[0,4]]]],[1,[[3,[0,1,2]],[4,[0]]]],[2,[[5,[0,1,4]]]]];
+const D=[];FL.forEach(([f,rs])=>rs.forEach(([r,ts])=>ts.forEach(t=>D.push({f,r,t,on:0,v:t?3:80}))));D[0].on=1;
+let tab=1,fi=null,ri=null,go=0;
+const nm=d=>RN[lang][d.r]+" "+TN[lang][d.t];
+const dev=(d,i)=>{const u=UI[lang],sl=d.t===0?[u.br,10,100,"%"]:d.t===1?[u.spd,1,5,""]:null;return `<div class="rw dv${d.on?" on":""}"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><use href="#${TY[d.t]}"/></svg><span class="nm"><b>${nm(d)}</b><small>${FN[lang][d.f]}</small></span><button class="tg" data-t="${i}" role="switch" aria-checked="${!!d.on}" aria-label="${nm(d)}"></button>${sl&&d.on?`<label class="sl">${sl[0]}<input type="range" min="${sl[1]}" max="${sl[2]}" value="${d.v}" data-v="${i}"><span>${d.v}${sl[3]}</span></label>`:""}</div>`};
+const nv=(k,v,ic,t,sm)=>`<div class="rw nav" role="button" tabindex="0" data-${k}="${v}"><svg class="ri" viewBox="0 0 24 24" aria-hidden="true"><use href="#${ic}"/></svg><span class="nm"><b>${t}</b><small>${sm}</small></span><span aria-hidden="true">›</span></div>`;
+function rl(){const L=$("#list"),C=$("#crumb"),u=UI[lang];let h="";
+$("#t1").classList.toggle("a",!!tab);$("#t2").classList.toggle("a",!tab);$("#q").hidden=!tab;$("#q").placeholder=u.search;C.hidden=!!tab||fi===null;
+if(tab){const q=$("#q").value.trim().toLowerCase();h=D.map((d,i)=>[d,i]).filter(([d])=>(nm(d)+" "+FN[lang][d.f]).toLowerCase().includes(q)).map(([d,i])=>dev(d,i)).join("")||`<p class="none">${u.none}</p>`}
+else if(fi===null)h=FL.map(([f,rs])=>nv("f",f,"s7",FN[lang][f],rs.length+" "+u.rm)).join("");
+else if(ri===null){C.innerHTML=`<button data-b="1">‹ ${u.back}</button><span>${FN[lang][fi]}</span>`;h=FL[fi][1].map(([r],k)=>nv("r",k,"s8",RN[lang][r],D.filter(d=>d.f===fi&&d.r===r&&d.on).length+"/"+D.filter(d=>d.f===fi&&d.r===r).length+" "+u.on)).join("")}
+else{const r=FL[fi][1][ri][0];C.innerHTML=`<button data-b="2">‹ ${u.back}</button><span>${RN[lang][r]}</span>`;h=D.map((d,i)=>[d,i]).filter(([d])=>d.f===fi&&d.r===r).map(([d,i])=>dev(d,i)).join("")}
+L.classList.toggle("go",!!go);go=0;L.innerHTML=h}
+const ls=$("#list");
+ls.onclick=e=>{const t=e.target.closest("[data-t]"),f=e.target.closest("[data-f]"),r=e.target.closest("[data-r]");if(t){const i=t.dataset.t;D[i].on^=1;rl();$('[data-t="'+i+'"]').focus()}else if(f){fi=+f.dataset.f;go=1;rl()}else if(r){ri=+r.dataset.r;go=1;rl()}};
+ls.onkeydown=e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches(".nav")){e.preventDefault();e.target.click()}};
+ls.oninput=e=>{const i=e.target.dataset.v;if(i===undefined)return;D[i].v=+e.target.value;e.target.nextElementSibling.textContent=D[i].v+(D[i].t===0?"%":"")};
+$("#crumb").onclick=e=>{const b=e.target.closest("[data-b]");if(!b)return;go=1;if(b.dataset.b==="1")fi=null;else ri=null;rl()};
+$("#t1").onclick=()=>{go=1;tab=1;rl()};$("#t2").onclick=()=>{go=1;tab=0;fi=ri=null;rl()};$("#q").oninput=rl;
+const el=[...document.querySelectorAll("[data-k]")];el.forEach(e=>e._o=e.innerHTML);
+function setLang(l){lang=l;document.documentElement.lang=l==="hi"?"hi":"en";const A=l==="hi"?H:l==="hn"?N:null;el.forEach(e=>{e.innerHTML=(A&&A[e.dataset.k])||e._o});document.querySelectorAll(".lbox button").forEach(b=>b.classList.toggle("a",b.dataset.l===l));draw();rl()}
+document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{setLang(b.dataset.l);document.getElementById("lang").classList.add("gone");document.body.classList.remove("lock");document.body.classList.add("in");document.querySelector("main").animate([{opacity:.3},{opacity:1}],{duration:450})});
+setLang("en");
+document.querySelectorAll("[data-wa]").forEach(a=>{a.href=WHATSAPP_LINK;a.target="_blank";a.rel="noopener"});
+document.getElementById("yr").textContent=new Date().getFullYear();
+const mb=document.getElementById("mb"),nav=document.getElementById("nav");
+mb.onclick=()=>{const o=nav.classList.toggle("open");mb.setAttribute("aria-expanded",o);mb.setAttribute("aria-label",o?"Close menu":"Open menu")};
+nav.onclick=e=>{if(e.target.tagName==="A"){nav.classList.remove("open");mb.setAttribute("aria-expanded","false")}};
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("v");io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll("section:not(.hero)").forEach(e=>{e.classList.add("rv");io.observe(e)});
+</script>
+</body>
+</html>
